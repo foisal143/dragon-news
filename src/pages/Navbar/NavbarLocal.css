@@ -1,0 +1,11 @@
+.user {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.navlink a {
+  text-decoration: none;
+  margin-left: 20px;
+  color: rgb(110, 109, 109);
+}
