@@ -1,32 +1,58 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import NavbarLocal from '../Navbar/NavbarLocal';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../ContextApi/ContextApi';
 import { updateProfile } from 'firebase/auth';
 
 const Register = () => {
+  const passRf = useRef();
+  const [error, setError] = useState('');
   const { createUser } = useContext(UserContext);
   const handlerFormSubmit = e => {
     e.preventDefault();
+    setError('');
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
     const img = form.iamge.value;
-
+    if (!/(?=.*?[A-Z])/.test(password)) {
+      setError('password should be one uppercase');
+      return;
+    } else if (!/(?=.*?[a-z])/.test(password)) {
+      setError('password should be one lowercase');
+      return;
+    } else if (!/(?=.*?[0-9])/.test(password)) {
+      setError('password should be one digit');
+      return;
+    } else if (!/(?=.*?[#?!@$%^&*-])/.test(password)) {
+      setError('password should be one special charecter');
+      return;
+    } else if (password.length < 6) {
+      setError('Password must be 6 cherecter');
+      return;
+    }
     createUser(email, password)
       .then(result => {
         const user = result.user;
         console.log(user);
         profileUpdate(user, name, img);
       })
-      .catch(er => console.log(er.message));
+      .catch(er => setError(er.message));
     form.reset();
   };
   const profileUpdate = (user, name, url) => {
     updateProfile(user, { displayName: name, photoURL: url })
       .then(() => {})
-      .catch(er => console.log(er.message));
+      .catch(er => setError(er.message));
+  };
+  // show password
+  const handlerPasswordShow = e => {
+    if (e.target.checked) {
+      passRf.current.type = 'text';
+    } else {
+      passRf.current.type = 'password';
+    }
   };
   return (
     <div style={{ minHeight: '75vh', backgroundColor: 'aliceblue' }}>
@@ -44,6 +70,7 @@ const Register = () => {
                 Name
               </label>
               <input
+                required
                 type="text"
                 name="name"
                 className="form-control"
@@ -55,6 +82,7 @@ const Register = () => {
                 Image
               </label>
               <input
+                required
                 type="text"
                 name="iamge"
                 className="form-control"
@@ -66,6 +94,7 @@ const Register = () => {
                 Email
               </label>
               <input
+                required
                 type="email"
                 name="email"
                 className="form-control"
@@ -77,13 +106,26 @@ const Register = () => {
                 Password
               </label>
               <input
+                ref={passRf}
+                required
                 type="password"
                 className="form-control"
-                placeholder="Enter name"
+                placeholder="Enter password"
                 name="password"
               />
+              <p className="text-danger">
+                <small>{error}</small>
+              </p>
             </div>
             <input
+              onChange={handlerPasswordShow}
+              type="checkbox"
+              name="check"
+              id="check"
+            />{' '}
+            <label htmlFor="check">Show Pssword</label>
+            <input
+              required
               className="form-control  mt-4 bg-secondary"
               type="submit"
               value="Register"

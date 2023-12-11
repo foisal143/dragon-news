@@ -19,7 +19,7 @@ const LeftNav = () => {
       <div>
         {categorys.map(category => (
           <Link
-            className="text-decoration-none text-secondary my-4 d-block"
+            className="text-decoration-none text-secondary my-5 d-block"
             key={category.id}
             to={`/category/${category.id}`}
           >
@@ -42,7 +42,7 @@ const LeftNav = () => {
           </Card.Text>
         </Card.Body>
       </Card>
-      <Card style={{ width: '100%', margin: '10px 0' }}>
+      <Card style={{ width: '100%', margin: '50px 0' }}>
         <Card.Img variant="top" src={img2} />
         <Card.Body>
           <Card.Title>

@@ -15,7 +15,7 @@ import {
   FaInstagram,
 } from 'react-icons/fa';
 const RightNav = () => {
-  const { googleSigninUser } = useContext(UserContext);
+  const { googleSigninUser, githubloginUser } = useContext(UserContext);
   const handlerGoogleLogin = () => {
     googleSigninUser()
       .then(result => {
@@ -24,8 +24,16 @@ const RightNav = () => {
       })
       .catch(er => console.log(er.message));
   };
+  const handlerGithubLogin = () => {
+    githubloginUser()
+      .then(result => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch(er => console.log(er.message));
+  };
   return (
-    <div>
+    <div className="d-flex  flex-column justify-content-center ">
       <div>
         <h4 className="mb-3">Login With</h4>
         <Button
@@ -35,7 +43,11 @@ const RightNav = () => {
         >
           <FaGoogle /> Login with Google
         </Button>
-        <Button className="w-100 mt-2" variant="outline-secondary">
+        <Button
+          onClick={handlerGithubLogin}
+          className="w-100 mt-2"
+          variant="outline-secondary"
+        >
           <FaGithub /> Login with Github
         </Button>
       </div>
@@ -70,7 +82,7 @@ const RightNav = () => {
         <img className="my-2" src={qzone3} alt="" />
       </div>
       <div className="my-4 position-relative">
-        <img className="w-100 h-100" src={bg} alt="" />
+        <img className="w-100 image-height" src={bg} alt="" />
         <div className="position-absolute mt-5 py-5  top-0 text-white text-center">
           <h2>Create an Amazing Newspaper</h2>
           <p className="px-4">

@@ -1,0 +1,10 @@
+.scroll {
+  overflow: scroll;
+  height: 203vh;
+}
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+.image-height {
+  height: 450px;
+}
